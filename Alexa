@@ -1,0 +1,35 @@
+import speech_recognition as spr
+import pyttsx3
+import pywhatkit
+mic = spr.Microphone()
+l = spr.Recognizer()
+def hear():
+     with mic as source:
+        print("hey, please say something")
+        audio = l.listen(source)
+        a = l.recognize_google(audio)
+        if 'alexa' in a:
+            a = a.replace('alexa', " ")
+     return a
+
+engine = pyttsx3.init()
+
+voice = engine.getProperty('voices')
+engine.setProperty('audio',voice[1].id)
+
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
+
+def command():
+    k = hear()
+    print(k)
+    if 'play' in k:
+        music = k.replace('play'," ")
+        speak('playing'+music)
+        pywhatkit.playonyt(music)
+    else:
+        speak("I didnot understand, please repeat")
+while True:
+    command()
+
